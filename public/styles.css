@@ -1,0 +1,8 @@
+.hero--event {
+    box-shadow: 0px 2px 4px grey;
+    border-radius: 14px;
+}
+
+img.hero--img {
+    width: 234px;
+}
