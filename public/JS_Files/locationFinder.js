@@ -8,6 +8,23 @@ function getLocation() {
 }
 
 function showPosition(position) {
-  x.innerHTML = "Latitude: " + position.coords.latitude +
-  "<br>Longitude: " + position.coords.longitude;
+    fetch('secret.json')
+    .then(response => response.text())
+    .then(data => {
+        data = JSON.parse(data)
+  	    // Do something with your data
+        console.log(data);
+        const url = `https://app.ticketmaster.com/discovery/v2/events?apikey=${data["ticketmaster-api-key"]}&latlong=${position.coords.latitude},${position.coords.longitude}&radius=1000&unit=miles&locale=*`;
+        fetch(url)
+            .then(response => response.json()) // read JSON response
+            .then(myjson => {
+            // code to execute once JSON response is available
+            console.log(myjson);
+            })
+    })
+    .catch(error => {
+      console.log(error); // Log error if there is one
+    })
 }
+
+
