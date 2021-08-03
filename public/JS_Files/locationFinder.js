@@ -1,5 +1,4 @@
-var currentPage = 0;
-var totalPages = -1;
+
 
 var x = document.getElementById("demo");
 function getLocation() {

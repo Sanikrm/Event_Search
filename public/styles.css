@@ -8,7 +8,8 @@
  body{
      max-width: 100%;
     overflow-x: hidden;
-    margin-bottom: 300px
+    margin-bottom: 300px;
+   
  }
 *{
     font-family: 'Poppins'
@@ -32,6 +33,8 @@
 }
 
 .hero--eventdesc2 {
+    overflow: auto;
+    height: 81px;
     padding-left: 37px;
     margin-top: -6px;
     font-size: 13px;
@@ -40,9 +43,14 @@
     padding-bottom: 13px;
 }
 
+.hero--eventdesc2::-webkit-scrollbar-track-piece{
+    background-color: pink;
+}
+
 .hero--eventname {
     font-weight: 500;
     padding-left: 38px;
+    padding-right: 42px;
 }
 
 button.signup--btn {
@@ -219,7 +227,7 @@ main.herosection {
 
 .hero--event_2 {
     box-shadow: 0px 2px 4px grey;
-    border-radius: 14px;
+    border-radius: 5px;
     width: 303px;
 }
 
@@ -228,6 +236,7 @@ main.herosection {
     justify-content: flex-start;
     gap: 34px;
     flex-wrap: wrap;
+    align-items: flex-start;
 }
 
 .extras{
@@ -238,23 +247,29 @@ main.herosection {
 }
 
 .learnmore {
-    padding: 1px 18px;
+     padding: 1px 18px;
     font-size: 12px;
     color: white;
     text-align: center;
     height: 39px;
-    position: relative;
     display: flex;
     float: right;
     box-shadow: 0px 2px 4px #b9b9b9;
-    margin-right: 30px;
+    margin-right: 147px;
     border: none;
-    margin-top: -68px;
-    justify-content: center;
+    margin-bottom: 28px;
     align-items: center;
     border-radius: 7px;
     width: auto;
-    background: linear-gradient(
+    background: linear-gradient( 
 159deg
-, var(--linearcolor1), var(--linearcolor2));
+ , var(--linearcolor1), var(--linearcolor2));
+
+}
+
+#locateme {
+    font-weight: 300;
+    text-decoration: underline;
+    margin-top: 10px;
+    cursor: pointer
 }

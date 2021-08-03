@@ -1,6 +1,7 @@
 {
   "projects": {
     "default": "eventsearch-f64ca",
-    "dev": "eventsearch-f64ca"
+    "dev": "eventsearch-f64ca",
+    "eventsearch": "eventsearch-f64ca"
   }
 }
