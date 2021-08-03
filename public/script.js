@@ -3,6 +3,8 @@ var totalPages = -1;
 let data = '';
 let yourlocation = "";
 
+let googleUser;
+
 const searchInput = document.querySelector("#search");
 const searchButton = document.querySelector('.magnifyingglass--btn');
 const results = document.querySelector(".results");
@@ -161,8 +163,13 @@ document.querySelector("#locateme").addEventListener("click", function () {
 
     function error(err) {
         getLocation();
-
     }
 
     navigator.geolocation.getCurrentPosition(success, error, options);
 })
+
+function pushToDB({ dates, name, locale, url, distance, images, info, classifications }) {
+    firebase.database().ref(`users/${googleUser.uid}/saved`).push({
+        name, dates, locale, url, distance, images, info, classifications
+    });
+}
