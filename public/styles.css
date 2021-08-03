@@ -356,3 +356,10 @@ main.herosection {
     top: 21px;
     cursor: pointer
 }
+
+.bookmark{
+    width: 30px;
+    position: relative;
+    left: 248px;
+    top: 7px;
+}

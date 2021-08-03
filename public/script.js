@@ -18,6 +18,7 @@ function renderCard({ dates, name, locale, url, distance, images, info, classifi
                 <h4 class="hero--eventdesc1">${dates.start.localDate} | ${classifications[0].segment.name} </h4>
                 <h4 class="hero--eventdesc2">${info === undefined ? "There is no info on this event. If you want to read more about the event, click the I'm interested button below :D" : info}</h4>
                   <button class="learnmore"><a target="_blank" style="color: white; text-decoration: none" href="${url}">I'm Interested</a></button>
+              <img src='images/icons8-heart-96.png' class="bookmark">
 
             </div>
   `
