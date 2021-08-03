@@ -1,7 +1,8 @@
 var currentPage = 0;
 var totalPages = -1;
 let data = '';
-let yourlocation;
+let yourlocation = "";
+
 const searchInput = document.querySelector("#search");
 const searchButton = document.querySelector('.magnifyingglass--btn');
 const results = document.querySelector(".results");
@@ -23,6 +24,8 @@ function renderCard({ dates, name, locale, url, distance, images, info, classifi
     fullhtml += html;
 }
 
+// TODO: THINK ABOUT EMPTY SEARCH
+
 searchButton.addEventListener("click", function () {
     fullhtml = ''
     results.innerHTML = ''
@@ -30,7 +33,10 @@ searchButton.addEventListener("click", function () {
         .then(response => response.text())
         .then(data => {
             data = JSON.parse(data)
-            const url = `https://app.ticketmaster.com/discovery/v2/events?apikey=${data["ticketmaster-api-key"]}&city=${searchInput.value}&radius=50&unit=miles&locale=*&page=${currentPage}`;
+            if (searchInput.value.length > 0) {
+                yourlocation = searchInput.value;
+            }
+            const url = `https://app.ticketmaster.com/discovery/v2/events?apikey=${data["ticketmaster-api-key"]}&city=${yourlocation}&radius=50&unit=miles&locale=*&page=${currentPage}`;
             fetch(url)
                 .then(response => response.json())
                 .then(myjson => {
@@ -110,14 +116,48 @@ document.querySelector("#locateme").addEventListener("click", function () {
         console.log(`Latitude : ${crd.latitude}`);
         console.log(`Longitude: ${crd.longitude}`);
         console.log(`More or less ${crd.accuracy} meters.`);
+        // fetch(`https://geocode.xyz/${crd.latitude},${crd.longitude}?json=1`)
+        //     .then((res) => {
+        //         const data = res.json();
+        //         console.log(data)
+        //         yourlocation = data.city;
+        //         console.log("Before", yourlocation)
+        //         const words = yourlocation.split();
+        //         for (const i in words) {
+        //             const word = words[i];
+        //             words[i] = word.slice(0, 1).toUpperCase() + word.toLowerCase().slice(1, word.length);
+        //         }
+        //         yourlocation = words.join(" ");
+        //         searchInput.value = yourlocation;
+        //         console.log("After", yourlocation)
+        //     }).catch((err) => {
+        //         if (yourlocation != "") {
+        //             searchInput.value = yourlocation;
+        //         }
+        //     });
+
         fetch(`https://geocode.xyz/${crd.latitude},${crd.longitude}?json=1`).then((res) => res.json()).then((res) => {
             console.log(res)
             yourlocation = res.city;
-            searchInput.value = yourlocation.slice(0, 1).toUpperCase() + yourlocation.toLowerCase().slice(1, yourlocation.length);
-        }).catch((err) => {
-            searchInput.value = "Try again"
-        });
 
+            const words = yourlocation.split(" ");
+            for (const i in words) {
+                const word = words[i];
+                words[i] = word.slice(0, 1).toUpperCase() + word.toLowerCase().slice(1, word.length);
+            }
+            console.log(words)
+            yourlocation = words.join(" ");
+            searchInput.value = yourlocation;
+
+            // searchInput.value = yourlocation.slice(0, 1).toUpperCase() + yourlocation.toLowerCase().slice(1, yourlocation.length);
+        }).catch((err) => {
+            if (yourlocation != "") {
+                searchInput.value = yourlocation;
+            } else {
+                searchInput.value = "Try again!"
+            }
+        });
+        
     }
 
     function error(err) {
