@@ -8,7 +8,8 @@ let googleUser;
 const searchInput = document.querySelector("#search");
 const searchButton = document.querySelector('.magnifyingglass--btn');
 const results = document.querySelector(".results");
-const showingresultsfor = document.querySelector(".showingresutlsfor")
+const showingresultsfor = document.querySelector(".showingresutlsfor");
+const signupbtn = document.querySelector(".signup--btn")
 
 let fullhtml = '';
 function renderCard({ dates, name, locale, url, distance, images, info, classifications }) {
@@ -166,6 +167,18 @@ document.querySelector("#locateme").addEventListener("click", function () {
     }
 
     navigator.geolocation.getCurrentPosition(success, error, options);
+})
+
+// --------SIGN UP FLOW------------------- //
+
+signupbtn.addEventListener("click", function(){
+    document.querySelector("body").style.overflow = 'hidden'
+    document.querySelector(".overlay").style.display = 'flex'
+})
+
+document.querySelector(".cancelModal1").addEventListener("click", function(){
+    document.querySelector("body").style.overflow = 'auto'
+    document.querySelector(".overlay").style.display = 'none'
 })
 
 function pushToDB({ dates, name, locale, url, distance, images, info, classifications }) {
