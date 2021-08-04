@@ -9,7 +9,7 @@ const searchInput = document.querySelector("#search");
 const searchButton = document.querySelector('.magnifyingglass--btn');
 const results = document.querySelector(".results");
 const showingresultsfor = document.querySelector(".showingresutlsfor");
-const signupbtn = document.querySelector(".signup--btn")
+const signupbtn = document.querySelector(".signup--btn");
 
 let fullhtml = '';
 function renderCard({ dates, name, locale, url, distance, images, info, classifications }) {
@@ -119,25 +119,6 @@ document.querySelector("#locateme").addEventListener("click", function () {
         console.log(`Latitude : ${crd.latitude}`);
         console.log(`Longitude: ${crd.longitude}`);
         console.log(`More or less ${crd.accuracy} meters.`);
-        // fetch(`https://geocode.xyz/${crd.latitude},${crd.longitude}?json=1`)
-        //     .then((res) => {
-        //         const data = res.json();
-        //         console.log(data)
-        //         yourlocation = data.city;
-        //         console.log("Before", yourlocation)
-        //         const words = yourlocation.split();
-        //         for (const i in words) {
-        //             const word = words[i];
-        //             words[i] = word.slice(0, 1).toUpperCase() + word.toLowerCase().slice(1, word.length);
-        //         }
-        //         yourlocation = words.join(" ");
-        //         searchInput.value = yourlocation;
-        //         console.log("After", yourlocation)
-        //     }).catch((err) => {
-        //         if (yourlocation != "") {
-        //             searchInput.value = yourlocation;
-        //         }
-        //     });
 
         fetch(`https://geocode.xyz/${crd.latitude},${crd.longitude}?json=1`).then((res) => res.json()).then((res) => {
             console.log(res)
@@ -148,7 +129,6 @@ document.querySelector("#locateme").addEventListener("click", function () {
                 const word = words[i];
                 words[i] = word.slice(0, 1).toUpperCase() + word.toLowerCase().slice(1, word.length);
             }
-            console.log(words)
             yourlocation = words.join(" ");
             searchInput.value = yourlocation;
 
@@ -173,6 +153,7 @@ document.querySelector("#locateme").addEventListener("click", function () {
 // --------SIGN UP FLOW------------------- //
 
 signupbtn.addEventListener("click", function(){
+    console.log("Signup button clicked!");
     document.querySelector("body").style.overflow = 'hidden'
     document.querySelector(".overlay").style.display = 'flex'
 })
@@ -186,4 +167,19 @@ function pushToDB({ dates, name, locale, url, distance, images, info, classifica
     firebase.database().ref(`users/${googleUser.uid}/saved`).push({
         name, dates, locale, url, distance, images, info, classifications
     });
+}
+
+function signIn() {
+  var provider = new firebase.auth.GoogleAuthProvider();
+  firebase.auth()
+  .signInWithPopup(provider)
+  .then((result) => {
+    /** @type {firebase.auth.OAuthCredential} */
+    var credential = result.credential;
+    var token = credential.accessToken;
+    googleUser = result.user;
+    
+  }).catch( e => {
+    console.log(e);
+  });
 }
