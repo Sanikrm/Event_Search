@@ -267,7 +267,7 @@ main.herosection {
     display: flex;
     float: right;
     box-shadow: 0px 2px 4px #b9b9b9;
-    margin-right: 147px;
+    margin-right: 160px;
     border: none;
     margin-bottom: 28px;
     align-items: center;
@@ -358,8 +358,89 @@ main.herosection {
 }
 
 .bookmark{
-    width: 30px;
+   width: 28px;
     position: relative;
-    left: 248px;
-    top: 7px;
+    left: 161px;
+    top: 4.4px;
+    cursor: pointer;
 }
+
+.overlay2{
+     background: linear-gradient(#000000c2, #000000cc);
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    top: 0px;
+    left: 0px;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 20;
+}
+
+.viewmore--modal{
+    width: 1000px;
+    height: 550px;
+    overflow:auto;
+    background: white;
+    border-radius: 4px;
+}
+
+img.viewmore--img {
+    width: 314px;
+    margin-left: 46px;
+    margin-top: 42px;
+    box-shadow: 0px 2px 4px grey;
+    border-radius: 4px;
+}
+
+.viewmore--img_hero {
+    display: flex;
+    column-gap: 54px;
+    align-items: center;
+}
+
+.viewmodal--name {
+    font-size: 30px;
+    font-weight: 500;
+    margin-bottom: -10px;
+}
+
+.viewmote--hero_right {
+    margin-top: 48px;
+}
+
+.viewmodal--extra {
+    font-weight: 400;
+}
+
+h4.viewmodal--info {
+    width: 316px;
+    margin-top: -2px;
+    font-size: 14px;
+    font-weight: 300;
+    line-height: 21px;
+}
+
+.viewmodal--moreinfo{
+     margin-top: 25px;
+    padding: 10px 26px;
+    background: linear-gradient(
+45deg
+, var(--linearcolor1), var(--linearcolor2));
+    border: none;
+    border-radius: 4px;
+    color: white;
+    cursor: pointer;
+}
+
+.locationsection {
+    padding: 0px 44px;
+    margin-top: 38px;
+}
+
+#mapid {
+    height: 288px;
+    z-index: 499;
+    margin-bottom: 30px;
+ }

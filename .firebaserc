@@ -3,6 +3,7 @@
     "default": "eventsearch-f64ca",
     "dev": "eventsearch-f64ca",
     "eventsearch": "eventsearch-f64ca",
-    "aydan": "eventsearch-f64ca"
+    "aydan": "eventsearch-f64ca",
+    "Event search app": "eventsearch-f64ca"
   }
 }

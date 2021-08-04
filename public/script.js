@@ -10,17 +10,68 @@ const searchButton = document.querySelector('.magnifyingglass--btn');
 const results = document.querySelector(".results");
 const showingresultsfor = document.querySelector(".showingresutlsfor");
 const signupbtn = document.querySelector(".signup--btn")
-
 let fullhtml = '';
-function renderCard({ dates, name, locale, url, distance, images, info, classifications }) {
+
+
+function viewMore(dates, name, locale, url, distance, images, info, classifications, eventlocation) {
+    
+     document.querySelector("body").style.overflow = 'hidden'
+    document.querySelector(".overlay2").style.display = 'flex'
+    console.log(dates, name, locale, url, distance, images, info, classifications);
+    document.querySelector('.viewmore--modal').innerHTML = `
+      <div class="viewmore--img_hero">
+          <img src="${images[4].url}" class="viewmore--img">
+          <div class="viewmote--hero_right">
+              <h3 class="viewmodal--name">${name}</h3>
+              <h5 class="viewmodal--extra">${dates.start.localDate} | ${classifications[0].segment.name}</h5>
+              <h4 class="viewmodal--info">${info === undefined ? "There is no info on this event. If you want to read more about the event, click the I'm interested button below :D" : info}</h4>
+              <button class="viewmodal--moreinfo">More info</button>
+          </div>
+        </div>
+        <div class="locationsection">
+        <h2 class="locationsectionh2">Location</h2>
+                 <div id="mapid"></div>
+
+      </div>
+     `
+
+   var mymap = L.map('mapid').setView([eventlocation.latitude, eventlocation.longitude], 8);
+
+	L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
+		maxZoom: 18,
+		attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, ' +
+			'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+		id: 'mapbox/streets-v11',
+		tileSize: 512,
+		zoomOffset: -1
+	}).addTo(mymap);
+
+	L.marker([eventlocation.latitude, eventlocation.longitude]).addTo(mymap)
+		.bindPopup("<b>Event here!</b><br />").openPopup();
+
+
+
+	var popup = L.popup();
+
+	function onMapClick(e) {
+		popup
+			.setLatLng(e.latlng)
+			.setContent("You clicked the map at " + e.latlng.toString())
+			.openOn(mymap);
+	}
+
+	mymap.on('click', onMapClick);
+}
+
+function renderCard({ dates, name, locale, url, distance, images, info, classifications, _embedded}) {
     let html = `
           <div class="hero--event_2">
                 <img src="${images[2].url}" class="hero--img">
                 <h3 class="hero--eventname">${name.length > 14 ? name.slice(0, 20) + '...' : name}</h3>
                 <h4 class="hero--eventdesc1">${dates.start.localDate} | ${classifications[0].segment.name} </h4>
                 <h4 class="hero--eventdesc2">${info === undefined ? "There is no info on this event. If you want to read more about the event, click the I'm interested button below :D" : info}</h4>
-                  <button class="learnmore"><a target="_blank" style="color: white; text-decoration: none" href="${url}">I'm Interested</a></button>
-              <img src='images/icons8-heart-96.png' class="bookmark">
+                <button class="learnmore" onclick='viewMore(${JSON.stringify(dates)},${JSON.stringify(name)}, ${JSON.stringify(locale)}, ${JSON.stringify(url)}, ${JSON.stringify(distance)}, ${JSON.stringify(images)}, ${JSON.stringify(info)}, ${JSON.stringify(classifications)}, ${JSON.stringify(_embedded.venues[0].location)})'>Learn More</button>
+               <img src='images/icons8-heart-96.png' class="bookmark" onclick="pushToDB(${name}, ${dates}, ${locale}, ${url}, ${distance}, ${images}, ${info}, ${classifications})">
 
             </div>
   `
@@ -51,9 +102,9 @@ searchButton.addEventListener("click", function () {
                         console.log(data._embedded[events])
                         data._embedded[events].forEach((eventdata) => renderCard(eventdata))
                         results.insertAdjacentHTML("afterbegin", fullhtml);
-                        results.scrollTo();
                         showingresultsfor.textContent = "Showing results for " + searchInput.value
                     }
+                     results.scrollTo();
 
                 })
         })
@@ -94,8 +145,7 @@ function showPosition(position) {
                         console.log(data._embedded[events])
                         data._embedded[events].forEach((eventdata) => renderCard(eventdata))
                         results.insertAdjacentHTML("afterbegin", fullhtml);
-                        results.scrollTo()
-                    }
+                     }
                 })
         })
         .catch(error => {
@@ -160,7 +210,7 @@ document.querySelector("#locateme").addEventListener("click", function () {
                 searchInput.value = "Try again!"
             }
         });
-        
+
     }
 
     function error(err) {
@@ -172,12 +222,12 @@ document.querySelector("#locateme").addEventListener("click", function () {
 
 // --------SIGN UP FLOW------------------- //
 
-signupbtn.addEventListener("click", function(){
+signupbtn.addEventListener("click", function () {
     document.querySelector("body").style.overflow = 'hidden'
     document.querySelector(".overlay").style.display = 'flex'
 })
 
-document.querySelector(".cancelModal1").addEventListener("click", function(){
+document.querySelector(".cancelModal1").addEventListener("click", function () {
     document.querySelector("body").style.overflow = 'auto'
     document.querySelector(".overlay").style.display = 'none'
 })
@@ -187,3 +237,5 @@ function pushToDB({ dates, name, locale, url, distance, images, info, classifica
         name, dates, locale, url, distance, images, info, classifications
     });
 }
+
+
