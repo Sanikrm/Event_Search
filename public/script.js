@@ -9,7 +9,7 @@ const searchInput = document.querySelector("#search");
 const searchButton = document.querySelector('.magnifyingglass--btn');
 const results = document.querySelector(".results");
 const showingresultsfor = document.querySelector(".showingresutlsfor");
-const signupbtn = document.querySelector(".signup--btn");
+// const signupbtn = document.querySelector(".signup--btn");
 
 let fullhtml = '';
 function renderCard({ dates, name, locale, url, distance, images, info, classifications }) {
@@ -26,8 +26,6 @@ function renderCard({ dates, name, locale, url, distance, images, info, classifi
   `
     fullhtml += html;
 }
-
-// TODO: THINK ABOUT EMPTY SEARCH
 
 searchButton.addEventListener("click", function () {
     fullhtml = ''
@@ -48,18 +46,16 @@ searchButton.addEventListener("click", function () {
                         totalPages = myjson.page.totalPages;
                     }
                     for (events in data._embedded) {
-                        console.log(data._embedded[events])
-                        data._embedded[events].forEach((eventdata) => renderCard(eventdata))
+                        console.log(data._embedded[events]);
+                        data._embedded[events].forEach((eventdata) => renderCard(eventdata));
                         results.insertAdjacentHTML("afterbegin", fullhtml);
                         results.scrollTo();
-                        showingresultsfor.textContent = "Showing results for " + searchInput.value
+                        showingresultsfor.textContent = "Showing results for " + searchInput.value;
                     }
 
                 })
         })
 })
-
-
 
 function getLocation() {
     if (navigator.geolocation) {
@@ -72,7 +68,6 @@ function getLocation() {
 window.addEventListener("load", function () {
     getLocation()
 });
-
 
 function showPosition(position) {
     fetch('secret.json')
@@ -150,18 +145,16 @@ document.querySelector("#locateme").addEventListener("click", function () {
     navigator.geolocation.getCurrentPosition(success, error, options);
 })
 
-// --------SIGN UP FLOW------------------- //
 
-signupbtn.addEventListener("click", function(){
-    console.log("Signup button clicked!");
+function openAuthModal() {
     document.querySelector("body").style.overflow = 'hidden'
     document.querySelector(".overlay").style.display = 'flex'
-})
+}
 
-document.querySelector(".cancelModal1").addEventListener("click", function(){
+function closeAuthModal() {
     document.querySelector("body").style.overflow = 'auto'
     document.querySelector(".overlay").style.display = 'none'
-})
+}
 
 function pushToDB({ dates, name, locale, url, distance, images, info, classifications }) {
     firebase.database().ref(`users/${googleUser.uid}/saved`).push({
@@ -174,11 +167,8 @@ function signIn() {
   firebase.auth()
   .signInWithPopup(provider)
   .then((result) => {
-    /** @type {firebase.auth.OAuthCredential} */
-    var credential = result.credential;
-    var token = credential.accessToken;
     googleUser = result.user;
-    
+    closeAuthModal();
   }).catch( e => {
     console.log(e);
   });
