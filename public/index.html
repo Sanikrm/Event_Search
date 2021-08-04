@@ -34,7 +34,7 @@
 </head>
 
 <body>
-    <button class="signup--btn">Sign Up</button>
+    <button class="signup--btn" onclick="initAuthProcess()">Sign Up</button>
     <main class="herosection">
         <section class="section--left">
             <div class="hero--event">
@@ -131,14 +131,19 @@
 
     <section class="overlay">
       <section class="signup--sect">
-          <img src="images/icons8-cancel-96.png" class="cancelModal1">
+          <img src="images/icons8-cancel-96.png" class="cancelModal1" onclick="closeAuthModal()">
          <h3  style="margin-top: 36px; font-weight: 500; font-size: 27px;">Sign up here!</h3>
          <h5 style=" margin-top: -18px; font-weight: 300; margin-bottom: 6px;">I already have an account</h5>
-            <input type="text" class="searchinput2" placeholder="Email" type="email">
-            <input type="text" class="searchinput2" placeholder="Password" type="email">
-            <button class="signup">Sign Up</button>
+            <input id="email" type="text" class="searchinput2" placeholder="Email" type="email">
+            <input id="password" type="password" class="searchinput2" placeholder="Password" type="email">
+            <button class="signup" onclick="initEmailAuth()">Sign Up</button>
         <h5 style="font-weight: 300">Or log in with Google</h5>
+<<<<<<< HEAD
         <button class="googlelogin">Google login</button>
+=======
+        <button class="googlelogin" onclick="signIn()">Google Login</button>
+
+>>>>>>> a30a035124553cb07d1faff74efd6b662f2e50c3
       </section>
     </section>
 

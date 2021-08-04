@@ -4,12 +4,15 @@ let data = '';
 let yourlocation = "";
 
 let googleUser;
+let signedIn = false;
 
 const searchInput = document.querySelector("#search");
 const searchButton = document.querySelector('.magnifyingglass--btn');
 const results = document.querySelector(".results");
 const showingresultsfor = document.querySelector(".showingresutlsfor");
 const signupbtn = document.querySelector(".signup--btn")
+const signupButton = document.querySelector(".signup--btn");
+
 let fullhtml = '';
 
 
@@ -78,8 +81,6 @@ function renderCard({ dates, name, locale, url, distance, images, info, classifi
     fullhtml += html;
 }
 
-// TODO: THINK ABOUT EMPTY SEARCH
-
 searchButton.addEventListener("click", function () {
     fullhtml = ''
     results.innerHTML = ''
@@ -90,7 +91,7 @@ searchButton.addEventListener("click", function () {
             if (searchInput.value.length > 0) {
                 yourlocation = searchInput.value;
             }
-            const url = `https://app.ticketmaster.com/discovery/v2/events?apikey=${data["ticketmaster-api-key"]}&city=${yourlocation}&radius=50&unit=miles&locale=*&page=${currentPage}`;
+            const url = `https://app.ticketmaster.com/discovery/v2/events?apikey=${data["ticketmaster-api-key"]}&city=${yourlocation}&radius=50&unit=miles&locale=*&page=${currentPage}&sort=date,asc`;
             fetch(url)
                 .then(response => response.json())
                 .then(myjson => {
@@ -99,8 +100,7 @@ searchButton.addEventListener("click", function () {
                         totalPages = myjson.page.totalPages;
                     }
                     for (events in data._embedded) {
-                        console.log(data._embedded[events])
-                        data._embedded[events].forEach((eventdata) => renderCard(eventdata))
+                        data._embedded[events].forEach((eventdata) => renderCard(eventdata));
                         results.insertAdjacentHTML("afterbegin", fullhtml);
                         showingresultsfor.textContent = "Showing results for " + searchInput.value
                     }
@@ -109,8 +109,6 @@ searchButton.addEventListener("click", function () {
                 })
         })
 })
-
-
 
 function getLocation() {
     if (navigator.geolocation) {
@@ -124,25 +122,21 @@ window.addEventListener("load", function () {
     getLocation()
 });
 
-
 function showPosition(position) {
     fetch('secret.json')
         .then(response => response.text())
         .then(data => {
             data = JSON.parse(data)
-            console.log(data);
             const url = `https://app.ticketmaster.com/discovery/v2/events?apikey=${data["ticketmaster-api-key"]}&latlong=${position.coords.latitude},${position.coords.longitude}&radius=50&unit=miles&locale=*&page=${currentPage}`;
             fetch(url)
                 .then(response => response.json()) // read JSON response
                 .then(myjson => {
                     // code to execute once JSON response is available
                     data = myjson;
-                    console.log(data._embedded)
                     if (totalPages == -1) {
                         totalPages = myjson.page.totalPages;
                     }
                     for (events in data._embedded) {
-                        console.log(data._embedded[events])
                         data._embedded[events].forEach((eventdata) => renderCard(eventdata))
                         results.insertAdjacentHTML("afterbegin", fullhtml);
                      }
@@ -152,7 +146,6 @@ function showPosition(position) {
             console.log(error); // Log error if there is one
         })
 }
-
 
 
 document.querySelector("#locateme").addEventListener("click", function () {
@@ -169,25 +162,6 @@ document.querySelector("#locateme").addEventListener("click", function () {
         console.log(`Latitude : ${crd.latitude}`);
         console.log(`Longitude: ${crd.longitude}`);
         console.log(`More or less ${crd.accuracy} meters.`);
-        // fetch(`https://geocode.xyz/${crd.latitude},${crd.longitude}?json=1`)
-        //     .then((res) => {
-        //         const data = res.json();
-        //         console.log(data)
-        //         yourlocation = data.city;
-        //         console.log("Before", yourlocation)
-        //         const words = yourlocation.split();
-        //         for (const i in words) {
-        //             const word = words[i];
-        //             words[i] = word.slice(0, 1).toUpperCase() + word.toLowerCase().slice(1, word.length);
-        //         }
-        //         yourlocation = words.join(" ");
-        //         searchInput.value = yourlocation;
-        //         console.log("After", yourlocation)
-        //     }).catch((err) => {
-        //         if (yourlocation != "") {
-        //             searchInput.value = yourlocation;
-        //         }
-        //     });
 
         fetch(`https://geocode.xyz/${crd.latitude},${crd.longitude}?json=1`).then((res) => res.json()).then((res) => {
             console.log(res)
@@ -198,7 +172,6 @@ document.querySelector("#locateme").addEventListener("click", function () {
                 const word = words[i];
                 words[i] = word.slice(0, 1).toUpperCase() + word.toLowerCase().slice(1, word.length);
             }
-            console.log(words)
             yourlocation = words.join(" ");
             searchInput.value = yourlocation;
 
@@ -220,7 +193,13 @@ document.querySelector("#locateme").addEventListener("click", function () {
     navigator.geolocation.getCurrentPosition(success, error, options);
 })
 
-// --------SIGN UP FLOW------------------- //
+function initAuthProcess() {
+    if (signedIn) {
+        signOut();
+    } else {
+        openAuthModal();
+    }
+}
 
 signupbtn.addEventListener("click", function () {
     document.querySelector("body").style.overflow = 'hidden'
@@ -232,6 +211,13 @@ document.querySelector(".cancelModal1").addEventListener("click", function () {
     document.querySelector(".overlay").style.display = 'none'
 })
 
+function initEmailAuth() {
+    const email = document.querySelector("#email").value;
+    const password = document.querySelector("#password").value;
+    emailSignIn(email, password);
+}
+
+
 function pushToDB({ dates, name, locale, url, distance, images, info, classifications }) {
     firebase.database().ref(`users/${googleUser.uid}/saved`).push({
         name, dates, locale, url, distance, images, info, classifications
@@ -239,3 +225,61 @@ function pushToDB({ dates, name, locale, url, distance, images, info, classifica
 }
 
 
+function signIn() {
+  var provider = new firebase.auth.GoogleAuthProvider();
+  firebase.auth()
+  .signInWithPopup(provider)
+  .then((result) => {
+    googleUser = result.user;    
+    closeAuthModal();
+    signupButton.innerText = "Log Out!";
+    signedIn = true;
+  }).catch(e => {
+    console.log(e);
+  });
+}
+
+
+function emailSignIn(email, password) {
+    firebase.auth().signInWithEmailAndPassword(email, password)
+    .then((userCredential) => {
+        googleUser = userCredential.user;
+    })
+    .catch((error) => {
+        var errorCode = error.code;
+        var errorMessage = error.message;
+        console.log(error)
+    });
+}
+
+function emailSignUp(email, password) {
+    firebase.auth().createUserWithEmailAndPassword(email, password)
+    .then((userCredential) => {
+        googleUser = userCredential.user;
+        console.log("Logged in!")
+    })
+    .catch((error) => {
+        var errorCode = error.code;
+        var errorMessage = error.message;
+    });
+}
+
+function signOut() {
+    console.log("Signed out!")
+    firebase.auth().signOut().then(() => {
+    signedIn = false;
+    signupButton.innerText = "Sign In!";
+    }).catch((error) => {
+    // An error happened.
+    });   
+}
+
+function openAuthModal() {
+    document.querySelector("body").style.overflow = 'hidden'
+    document.querySelector(".overlay").style.display = 'flex'
+}
+
+function closeAuthModal() {
+    document.querySelector("body").style.overflow = 'auto'
+    document.querySelector(".overlay").style.display = 'none'
+}
