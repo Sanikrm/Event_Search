@@ -54,9 +54,11 @@ function viewMore(dates, name, locale, url, distance, images, info, classificati
     L.marker([eventlocation.latitude, eventlocation.longitude]).addTo(mymap)
         .bindPopup("<b>Event here!</b><br />").openPopup();
 
-        document.querySelector(".overlay2").addEventListener("click", function(){
+        document.querySelector(".overlay2").addEventListener("click", function(e){
+            if(e.target.className === "overlay2"){
                 document.querySelector("body").style.overflow = 'auto'
     document.querySelector(".overlay2").style.display = 'none'
+            }
         })
 }
 
