@@ -38,7 +38,7 @@ searchButton.addEventListener("click", function () {
             if (searchInput.value.length > 0) {
                 yourlocation = searchInput.value;
             }
-            const url = `https://app.ticketmaster.com/discovery/v2/events?apikey=${data["ticketmaster-api-key"]}&city=${yourlocation}&radius=50&unit=miles&locale=*&page=${currentPage}`;
+            const url = `https://app.ticketmaster.com/discovery/v2/events?apikey=${data["ticketmaster-api-key"]}&city=${yourlocation}&radius=50&unit=miles&locale=*&page=${currentPage}&sort=date,asc`;
             fetch(url)
                 .then(response => response.json())
                 .then(myjson => {
@@ -52,7 +52,7 @@ searchButton.addEventListener("click", function () {
                         results.scrollTo();
                         showingresultsfor.textContent = "Showing results for " + searchInput.value;
                     }
-
+                    console.log(data);
                 })
         })
 })
@@ -149,15 +149,12 @@ function initAuthProcess() {
     }
 }
 
-function openAuthModal() {
-    document.querySelector("body").style.overflow = 'hidden'
-    document.querySelector(".overlay").style.display = 'flex'
+function initEmailAuth() {
+    const email = document.querySelector("#email").value;
+    const password = document.querySelector("#password").value;
+    emailSignIn(email, password);
 }
 
-function closeAuthModal() {
-    document.querySelector("body").style.overflow = 'auto'
-    document.querySelector(".overlay").style.display = 'none'
-}
 
 function pushToDB({ dates, name, locale, url, distance, images, info, classifications }) {
     firebase.database().ref(`users/${googleUser.uid}/saved`).push({
@@ -179,6 +176,31 @@ function signIn() {
   });
 }
 
+
+function emailSignIn(email, password) {
+    firebase.auth().signInWithEmailAndPassword(email, password)
+    .then((userCredential) => {
+        googleUser = userCredential.user;
+    })
+    .catch((error) => {
+        var errorCode = error.code;
+        var errorMessage = error.message;
+        console.log(error)
+    });
+}
+
+function emailSignUp(email, password) {
+    firebase.auth().createUserWithEmailAndPassword(email, password)
+    .then((userCredential) => {
+        googleUser = userCredential.user;
+        console.log("Logged in!")
+    })
+    .catch((error) => {
+        var errorCode = error.code;
+        var errorMessage = error.message;
+    });
+}
+
 function signOut() {
     console.log("Signed out!")
     firebase.auth().signOut().then(() => {
@@ -187,5 +209,14 @@ function signOut() {
     }).catch((error) => {
     // An error happened.
     });   
-    
+}
+
+function openAuthModal() {
+    document.querySelector("body").style.overflow = 'hidden'
+    document.querySelector(".overlay").style.display = 'flex'
+}
+
+function closeAuthModal() {
+    document.querySelector("body").style.overflow = 'auto'
+    document.querySelector(".overlay").style.display = 'none'
 }
