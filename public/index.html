@@ -100,10 +100,17 @@
                     <button class="magnifyingglass--btn"><img src="images/icons8-search-50.png"></button>
                 </div>
                 <div class="places-suggestion">
-                    <div class="suggestion">
+                    <div class="suggestion" onclick="searchSuggestion('New York')">
                         <h3>New York, NY</h3>
                     </div>
-                    <div class="suggestion">
+                     <div class="suggestion" onclick="searchSuggestion('Houston')">
+                        <h3>Houston, TX</h3>
+                    </div>
+                    <div class="suggestion" onclick="searchSuggestion('Chicago')">
+                        <h3>Chicage, IL</h3>
+                    </div>
+                    
+                    <div class="suggestion" onclick="searchSuggestion('Los Angeles')">
                         <h3>Los Angeles, CA</h3>
                     </div>
                 </div>
@@ -155,8 +162,16 @@
           </div>
         </div>
         <div class="locationsection">
+            <div>
         <h2 class="locationsectionh2">Location</h2>
+        <h3>Location: ...</h3>
+    </div>
+        <div class="mapsection">
          <div id="mapid"></div>
+       
+           
+        
+         </div>
       </div>
         </section>
     </section>
@@ -201,8 +216,7 @@
         });
     </script>
   </body>
-  <a href ="JS_Files/demo.html">go</a>
-</html>
+ </html>
 
 
 <!-- <script>

@@ -8,7 +8,7 @@
  body{
      max-width: 100%;
     overflow-x: hidden;
-    margin-bottom: 300px;
+    margin-bottom: 100px;
    
  }
 *{
@@ -161,10 +161,16 @@ main.herosection {
 
  
 .places-suggestion {
-    display: flex;
+ display: flex;
     margin-top: 16px;
     column-gap: 10px;
+    cursor: pointer;
+    width: 395px;
+    flex-wrap: wrap;
+    row-gap: 11px;
+
 }
+
 
 
 .suggestion {
@@ -388,6 +394,7 @@ img.viewmore--img {
     font-size: 30px;
     font-weight: 500;
     margin-bottom: -10px;
+    width: 463px
 }
 
 .viewmote--hero_right {
@@ -407,7 +414,7 @@ h4.viewmodal--info {
 }
 
 .viewmodal--moreinfo{
-     margin-top: 25px;
+     margin-top: 7px;
     padding: 10px 26px;
     background: linear-gradient(
 45deg
@@ -420,11 +427,24 @@ h4.viewmodal--info {
 
 .locationsection {
     padding: 0px 44px;
+    display: flex;
     margin-top: 38px;
+    column-gap: 189px;
+}
+
+.locationsectionh2 {
+    font-weight: 500;
 }
 
 #mapid {
     height: 288px;
     z-index: 499;
     margin-bottom: 30px;
+    width: 427px;
+ }
+
+ 
+ .locationtext {
+    font-size: 13px;
+    font-weight: 300;
  }
