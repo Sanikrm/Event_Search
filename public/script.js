@@ -4,12 +4,13 @@ let data = '';
 let yourlocation = "";
 
 let googleUser;
+let signedIn = false;
 
 const searchInput = document.querySelector("#search");
 const searchButton = document.querySelector('.magnifyingglass--btn');
 const results = document.querySelector(".results");
 const showingresultsfor = document.querySelector(".showingresutlsfor");
-// const signupbtn = document.querySelector(".signup--btn");
+const signupButton = document.querySelector(".signup--btn");
 
 let fullhtml = '';
 function renderCard({ dates, name, locale, url, distance, images, info, classifications }) {
@@ -46,7 +47,6 @@ searchButton.addEventListener("click", function () {
                         totalPages = myjson.page.totalPages;
                     }
                     for (events in data._embedded) {
-                        console.log(data._embedded[events]);
                         data._embedded[events].forEach((eventdata) => renderCard(eventdata));
                         results.insertAdjacentHTML("afterbegin", fullhtml);
                         results.scrollTo();
@@ -74,19 +74,16 @@ function showPosition(position) {
         .then(response => response.text())
         .then(data => {
             data = JSON.parse(data)
-            console.log(data);
             const url = `https://app.ticketmaster.com/discovery/v2/events?apikey=${data["ticketmaster-api-key"]}&latlong=${position.coords.latitude},${position.coords.longitude}&radius=50&unit=miles&locale=*&page=${currentPage}`;
             fetch(url)
                 .then(response => response.json()) // read JSON response
                 .then(myjson => {
                     // code to execute once JSON response is available
                     data = myjson;
-                    console.log(data._embedded)
                     if (totalPages == -1) {
                         totalPages = myjson.page.totalPages;
                     }
                     for (events in data._embedded) {
-                        console.log(data._embedded[events])
                         data._embedded[events].forEach((eventdata) => renderCard(eventdata))
                         results.insertAdjacentHTML("afterbegin", fullhtml);
                         results.scrollTo()
@@ -97,7 +94,6 @@ function showPosition(position) {
             console.log(error); // Log error if there is one
         })
 }
-
 
 
 document.querySelector("#locateme").addEventListener("click", function () {
@@ -145,6 +141,13 @@ document.querySelector("#locateme").addEventListener("click", function () {
     navigator.geolocation.getCurrentPosition(success, error, options);
 })
 
+function initAuthProcess() {
+    if (signedIn) {
+        signOut();
+    } else {
+        openAuthModal();
+    }
+}
 
 function openAuthModal() {
     document.querySelector("body").style.overflow = 'hidden'
@@ -167,9 +170,22 @@ function signIn() {
   firebase.auth()
   .signInWithPopup(provider)
   .then((result) => {
-    googleUser = result.user;
+    googleUser = result.user;    
     closeAuthModal();
-  }).catch( e => {
+    signupButton.innerText = "Log Out!";
+    signedIn = true;
+  }).catch(e => {
     console.log(e);
   });
+}
+
+function signOut() {
+    console.log("Signed out!")
+    firebase.auth().signOut().then(() => {
+    signedIn = false;
+    signupButton.innerText = "Sign In!";
+    }).catch((error) => {
+    // An error happened.
+    });   
+    
 }
