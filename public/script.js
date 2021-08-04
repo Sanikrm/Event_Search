@@ -17,7 +17,7 @@ let fullhtml = '';
 
 
 function viewMore(dates, name, locale, url, distance, images, info, classifications, eventlocation) {
-    
+    console.log(url)
      document.querySelector("body").style.overflow = 'hidden'
     document.querySelector(".overlay2").style.display = 'flex'
     console.log(dates, name, locale, url, distance, images, info, classifications);
@@ -28,7 +28,7 @@ function viewMore(dates, name, locale, url, distance, images, info, classificati
               <h3 class="viewmodal--name">${name}</h3>
               <h5 class="viewmodal--extra">${dates.start.localDate} | ${classifications[0].segment.name}</h5>
               <h4 class="viewmodal--info">${info === undefined ? "There is no info on this event. If you want to read more about the event, click the I'm interested button below :D" : info}</h4>
-              <button class="viewmodal--moreinfo">More info</button>
+              <button class="viewmodal--moreinfo"><a href="${url}" target="_blank" style="color: white; text-decoration: none">More info</a></button>
           </div>
         </div>
         <div class="locationsection">
@@ -214,7 +214,7 @@ document.querySelector(".cancelModal1").addEventListener("click", function () {
 function initEmailAuth() {
     const email = document.querySelector("#email").value;
     const password = document.querySelector("#password").value;
-    emailSignIn(email, password);
+    emailSignUp(email, password);
 }
 
 
@@ -261,7 +261,8 @@ function emailSignUp(email, password) {
     .catch((error) => {
         var errorCode = error.code;
         var errorMessage = error.message;
-    });
+        alert(errorMessage)
+    });  
 }
 
 function signOut() {
@@ -271,6 +272,7 @@ function signOut() {
     signupButton.innerText = "Sign In!";
     }).catch((error) => {
     // An error happened.
+        
     });   
 }
 

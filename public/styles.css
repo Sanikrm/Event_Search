@@ -286,24 +286,8 @@ main.herosection {
     cursor: pointer
 }
 
-.randomball:hover{
-    animation: bounce 2s infinite ease-out
-}
-
-@keyframes bounce{
-    0%{
-        transform: translateY(0px);
-    }
-
-    50%{
-        transform: translateY(10px);
-    }
-
-    100%{
-        transform: translateY(-10px)
-    }
-   
-}
+ 
+ 
 
 .overlay{
     background: linear-gradient(#000000c2, #000000cc);
