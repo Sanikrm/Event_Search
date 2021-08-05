@@ -13,9 +13,6 @@ const showingresultsfor = document.querySelector(".showingresutlsfor");
 const signupbtn = document.querySelector(".signup--btn")
 const signupButton = document.querySelector(".signup--btn");
 
-let fullhtml = '';
-
-
 function viewMore(dates, name, locale, url, distance, images, info, classifications, eventlocation) {
     console.log(url)
     document.querySelector("body").style.overflow = 'hidden'
