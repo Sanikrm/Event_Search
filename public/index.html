@@ -25,12 +25,12 @@
         href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
-     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
-   integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
-   crossorigin=""/>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+        integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+        crossorigin="" />
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
-   integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
-   crossorigin=""></script>
+        integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+        crossorigin=""></script>
 </head>
 
 <body>
@@ -103,13 +103,13 @@
                     <div class="suggestion" onclick="searchSuggestion('New York')">
                         <h3>New York, NY</h3>
                     </div>
-                     <div class="suggestion" onclick="searchSuggestion('Houston')">
+                    <div class="suggestion" onclick="searchSuggestion('Houston')">
                         <h3>Houston, TX</h3>
                     </div>
                     <div class="suggestion" onclick="searchSuggestion('Chicago')">
                         <h3>Chicage, IL</h3>
                     </div>
-                    
+
                     <div class="suggestion" onclick="searchSuggestion('Los Angeles')">
                         <h3>Los Angeles, CA</h3>
                     </div>
@@ -122,60 +122,56 @@
     <div class="divider"></div>
     <section class="section--extendedsearch">
         <h2 class="eventssearchtext">Events Search</h2>
-        <div class="secondarysearch">
-            <input type="text" class="searchinput2" placeholder="Choose city">
-            <input type="text" class="searchinput2" placeholder="Add a specific keyword in mind?">
-            <input type="text" class="searchinput2" placeholder="Choose country">
-            <button class="magnifyingglass--btn"><img src="images/icons8-search-50.png"></button>
-        </div>
+      
         <h5 style="font-weight: 300; color: gray;" class="showingresutlsfor">Showing results for...</h5>
         <section>
-            <div class="results">            
-             
+            <div class="results">
+
             </div>
         </section>
     </section>
 
     <section class="overlay">
-      <section class="signup--sect">
-          <img src="images/icons8-cancel-96.png" class="cancelModal1" onclick="closeAuthModal()">
-         <h3  style="margin-top: 36px; font-weight: 500; font-size: 27px;">Sign up here!</h3>
-         <h5 style=" margin-top: -18px; font-weight: 300; margin-bottom: 6px;">I already have an account</h5>
+        <section class="signup--sect">
+            <img src="images/icons8-cancel-96.png" class="cancelModal1" onclick="closeAuthModal()">
+            <h3 style="margin-top: 36px; font-weight: 500; font-size: 27px;">Sign up here!</h3>
+            <h5 style=" margin-top: -18px; font-weight: 300; margin-bottom: 6px;">I already have an account</h5>
             <input id="email" type="text" class="searchinput2" placeholder="Email" type="email">
             <input id="password" type="password" class="searchinput2" placeholder="Password" type="email">
             <button class="signup" onclick="initEmailAuth()">Sign Up</button>
-        <h5 style="font-weight: 300">Or log in with Google</h5>
-         <button class="googlelogin" onclick="signIn()">Google Login</button>
+            <h5 style="font-weight: 300">Or log in with Google</h5>
+            <button class="googlelogin" onclick="signIn()">Google Login</button>
 
-      </section>
+        </section>
     </section>
 
     <section class="overlay2">
         <section class="viewmore--modal">
-          <div class="viewmore--img_hero">
-          <img src="images/burgundy-138.png" class="viewmore--img">
-          <div class="viewmote--hero_right">
-              <h3 class="viewmodal--name">Dance party</h3>
-              <h5 class="viewmodal--extra">June 30 2020 | Dance</h5>
-              <h4 class="viewmodal--info">Lorem ipsum doloar apsum bolor olor e blah blah blah elloreum ispum dolor amet ckajur akeran fena</h4>
-              <button class="viewmodal--moreinfo">More info</button>
-          </div>
-        </div>
-        <div class="locationsection">
-            <div>
-        <h2 class="locationsectionh2">Location</h2>
-        <h3>Location: ...</h3>
-    </div>
-        <div class="mapsection">
-         <div id="mapid"></div>
-       
-           
-        
-         </div>
-      </div>
+            <div class="viewmore--img_hero">
+                <img src="images/burgundy-138.png" class="viewmore--img">
+                <div class="viewmote--hero_right">
+                    <h3 class="viewmodal--name">Dance party</h3>
+                    <h5 class="viewmodal--extra">June 30 2020 | Dance</h5>
+                    <h4 class="viewmodal--info">Lorem ipsum doloar apsum bolor olor e blah blah blah elloreum ispum
+                        dolor amet ckajur akeran fena</h4>
+                    <button class="viewmodal--moreinfo">More info</button>
+                </div>
+            </div>
+            <div class="locationsection">
+                <div>
+                    <h2 class="locationsectionh2">Location</h2>
+                    <h3>Location: ...</h3>
+                </div>
+                <div class="mapsection">
+                    <div id="mapid"></div>
+
+
+
+                </div>
+            </div>
         </section>
     </section>
-    
+
     <script src="script.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
@@ -215,12 +211,8 @@
             }
         });
     </script>
-  </body>
- </html>
+</body>
 
+</html>
 
-<!-- <script>
-    
-
-
-</script> -->
+ 

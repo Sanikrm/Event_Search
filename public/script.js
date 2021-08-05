@@ -91,7 +91,7 @@ function searchEvent() {
             fetch(url)
                 .then(response => response.json())
                 .then(myjson => {
-                    data = myjson;
+                     data = myjson;
                     if (totalPages == -1) {
                         totalPages = myjson.page.totalPages;
                     }
@@ -287,3 +287,5 @@ function searchSuggestion(city) {
     console.log(yourlocation)
     searchEvent()
 }
+
+
