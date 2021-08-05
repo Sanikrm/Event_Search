@@ -307,6 +307,18 @@ main.herosection {
     align-items: center;
 }
 
+.overlay3{
+    background: linear-gradient(#000000c2, #000000cc);
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    top: 0px;
+    left: 0px;
+    display: none;
+    justify-content: center;
+    align-items: center;
+}
+
  
 .signup--sect {
     height: 463px;

@@ -78,6 +78,7 @@ function renderCard({ dates, name, locale, url, distance, images, info, classifi
     
     let button = document.createElement("button");
     button.onclick = () => viewMore(dates, name, locale, url, distance, images, info, classifications, _embedded.venues[0].location)
+    button.classList.add("learnmore");
     button.innerText = "Learn More!";
 
     let img = document.createElement("img");
@@ -105,7 +106,7 @@ function searchEvent() {
             if (searchInput.value.length > 0) {
                 yourlocation = searchInput.value;
             }
-            const url = `https://app.ticketmaster.com/discovery/v2/events?apikey=${data["ticketmaster-api-key"]}&city=${yourlocation}&radius=50&unit=miles&locale=*&page=${currentPage}`;
+            const url = `https://app.ticketmaster.com/discovery/v2/events?apikey=${data["ticketmaster-api-key"]}&city=${yourlocation}&radius=50&unit=miles&locale=*&page=${currentPage}&sort=date,asc`;
             fetch(url)
                 .then(response => response.json())
                 .then(myjson => {
@@ -143,7 +144,7 @@ function showPosition(position) {
         .then(response => response.text())
         .then(data => {
             data = JSON.parse(data)
-            const url = `https://app.ticketmaster.com/discovery/v2/events?apikey=${data["ticketmaster-api-key"]}&latlong=${position.coords.latitude},${position.coords.longitude}&radius=50&unit=miles&locale=*&page=${currentPage}`;
+            const url = `https://app.ticketmaster.com/discovery/v2/events?apikey=${data["ticketmaster-api-key"]}&latlong=${position.coords.latitude},${position.coords.longitude}&radius=50&unit=miles&locale=*&page=${currentPage}&sort=date,asc`;
             fetch(url)
                 .then(response => response.json()) // read JSON response
                 .then(myjson => {
@@ -153,7 +154,7 @@ function showPosition(position) {
                         totalPages = myjson.page.totalPages;
                     }
                     for (events in data._embedded) {
-                        data._embedded[events].forEach((eventdata) => renderCard(eventdata))
+                        data._embedded[events].forEach((eventdata) => results.appendChild(renderCard(eventdata)));
                         results.insertAdjacentHTML("afterbegin", fullhtml);
                     }
                 })
@@ -233,10 +234,30 @@ function initEmailAuth() {
 
 
 function pushToDB(dates, name, locale, url, distance, images, info, classifications, location) {
-    console.log("push to db");
-    firebase.database().ref(`users/${googleUser.uid}/saved`).push({
-        name, dates, locale, url, images, info, classifications
-    });
+    if (!signedIn) {
+        console.log("init auth!")
+        openErrorModal();
+    }
+
+    if (signedIn) {
+        firebase.database().ref(`users/${googleUser.uid}/saved`).push({
+            name, dates, locale, url, images, info, classifications
+        });
+    }
+}
+
+function pullFromDB() {
+    if (!signedIn) {
+        openErrorModal();
+    }
+
+    if (signedIn) {
+        firebase.database().ref(`users/${googleUser.uid}/saved`).on("value", snapshot => {
+            const data = snapshot.val;
+            console.log(data);
+        })
+    }
+
 }
 
 
@@ -292,6 +313,7 @@ function signOut() {
 }
 
 function openAuthModal() {
+    console.log("Opening modal")
     document.querySelector("body").style.overflow = 'hidden'
     document.querySelector(".overlay").style.display = 'flex'
 }
@@ -299,6 +321,17 @@ function openAuthModal() {
 function closeAuthModal() {
     document.querySelector("body").style.overflow = 'auto'
     document.querySelector(".overlay").style.display = 'none'
+}
+
+function openErrorModal() {
+    console.log("Opening modal")
+    document.querySelector("body").style.overflow = 'hidden'
+    document.querySelector(".overlay3").style.display = 'flex'
+}
+
+function closeErrorModal() {
+    document.querySelector("body").style.overflow = 'auto'
+    document.querySelector(".overlay3").style.display = 'none'
 }
 
 function searchSuggestion(city) {

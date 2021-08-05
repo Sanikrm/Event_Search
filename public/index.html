@@ -138,15 +138,23 @@
 
     <section class="overlay">
       <section class="signup--sect">
-          <img src="images/icons8-cancel-96.png" class="cancelModal1" onclick="closeAuthModal()">
-         <h3  style="margin-top: 36px; font-weight: 500; font-size: 27px;">Sign up here!</h3>
-         <h5 style=" margin-top: -18px; font-weight: 300; margin-bottom: 6px;">I already have an account</h5>
+            <img src="images/icons8-cancel-96.png" class="cancelModal1" onclick="closeAuthModal()">
+            <h3  style="margin-top: 36px; font-weight: 500; font-size: 27px;">Sign up here!</h3>
+            <h5 style=" margin-top: -18px; font-weight: 300; margin-bottom: 6px;">I already have an account</h5>
             <input id="email" type="text" class="searchinput2" placeholder="Email" type="email">
             <input id="password" type="password" class="searchinput2" placeholder="Password" type="email">
             <button class="signup" onclick="initEmailAuth()">Sign Up</button>
         <h5 style="font-weight: 300">Or log in with Google</h5>
          <button class="googlelogin" onclick="signIn()">Google Login</button>
+      </section>
+    </section>
 
+    <section class="overlay3">
+      <section class="signup--sect">
+            <img src="images/icons8-cancel-96.png" class="cancelModal1" onclick="closeErrorModal()">
+            <h3  style="margin-top: 36px; font-weight: 500; font-size: 27px;">Ooops!</h3>
+            <h5 style=" margin-top: -18px; font-weight: 300; margin-bottom: 6px;">You need to be signed in to access saved events!</h5>
+         <button class="googlelogin" onclick="signIn()">Google Login</button>
       </section>
     </section>
 
