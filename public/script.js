@@ -64,39 +64,6 @@ function viewMore(dates, name, locale, url, distance, images, info, classificati
 }
 
 function renderCard({ dates, name, locale, url, distance, images, info, classifications, _embedded }) {
-<<<<<<< HEAD
-
-    console.log("calling render!")
-
-    let container = document.createElement("div")
-
-    let element = document.createElement("div");
-    element.classList.add("hero--event_2")
-
-    let eventImg = ` <img src="${images[2].url}" class="hero--img">`;;
-    let eventName = `<h3 class="hero--eventname">${name.length > 14 ? name.slice(0, 20) + '...' : name}</h3>`;
-    let eventDesc1 = `<h4 class="hero--eventdesc1">${dates.start.localDate} | ${classifications[0].segment.name} </h4>`;
-    let eventDesc2 = `<h4 class="hero--eventdesc2">${info === undefined ? "There is no info on this event. If you want to read more about the event, click the I'm interested button below :D" : info}</h4>;`
-    
-    let button = document.createElement("button");
-    button.onclick = () => viewMore(dates, name, locale, url, distance, images, info, classifications, _embedded.venues[0].location)
-    button.classList.add("learnmore");
-    button.innerText = "Learn More!";
-
-    let img = document.createElement("img");
-    img.src = "images/icons8-heart-96.png"
-    img.classList.add("bookmark")
-    img.onclick = () => pushToDB(dates, name, locale, url, distance, images, info, classifications, _embedded.venues[0].location)
-
-    element.innerHTML += eventImg + eventName + eventDesc1 + eventDesc2
-    element.appendChild(button);
-    element.appendChild(img);
-
-    container.appendChild(element)
-
-    return element;
-    // return container.innerHTML;
-=======
     let html = `
           <div class="hero--event_2">
                 <img src="${images[2].url}" class="hero--img">
@@ -109,7 +76,6 @@ function renderCard({ dates, name, locale, url, distance, images, info, classifi
             </div>
   `
     fullhtml += html;
->>>>>>> 3534b9927232ee7fea6d2da78fbaccbda94e9fb1
 }
 
 function searchEvent() {
