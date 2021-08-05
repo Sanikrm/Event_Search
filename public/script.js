@@ -27,11 +27,12 @@ function viewMore(dates, name, locale, url, distance, images, info, classificati
           <div class="viewmote--hero_right">
               <h3 class="viewmodal--name">${name}</h3>
               <h5 class="viewmodal--extra">${dates.start.localDate} | ${classifications[0].segment.name}</h5>
-              <h4 class="viewmodal--info">${info === undefined ? "There is no info on this event. If you want to read more about the event, click the I'm interested button below :D" : info}</h4>
+              <h4 class="viewmodal--info">${info === undefined ? "There is no info on this event. If you want to read more about the event, click the I'm interested button below :D" : info.slice(0, 150) + '...'}</h4>
               <button class="viewmodal--moreinfo"><a href="${url}" target="_blank" style="color: white; text-decoration: none">More info</a></button>
           </div>
         </div>
         <div class="locationsection">
+        
         <div>
         <h2 class="locationsectionh2">Location</h2>
         <h3 class="locationtext">Check on google maps <a target="_blank" href="https://www.google.com/maps/@${eventlocation.latitude},${eventlocation.longitude},15z">here</a></h3>
@@ -63,6 +64,7 @@ function viewMore(dates, name, locale, url, distance, images, info, classificati
 }
 
 function renderCard({ dates, name, locale, url, distance, images, info, classifications, _embedded }) {
+<<<<<<< HEAD
 
     console.log("calling render!")
 
@@ -94,10 +96,24 @@ function renderCard({ dates, name, locale, url, distance, images, info, classifi
 
     return element;
     // return container.innerHTML;
+=======
+    let html = `
+          <div class="hero--event_2">
+                <img src="${images[2].url}" class="hero--img">
+                <h3 class="hero--eventname">${name.length > 14 ? name.slice(0, 20) + '...' : name}</h3>
+                <h4 class="hero--eventdesc1">${dates.start.localDate} | ${classifications[0].segment.name} </h4>
+                <h4 class="hero--eventdesc2">${info === undefined ? "There is no info on this event. If you want to read more about the event, click the I'm interested button below :D" : info}</h4>
+                <button class="learnmore" onclick='viewMore(${JSON.stringify(dates)},${JSON.stringify(name)}, ${JSON.stringify(locale)}, ${JSON.stringify(url)}, ${JSON.stringify(distance)}, ${JSON.stringify(images)}, ${JSON.stringify(info)}, ${JSON.stringify(classifications)}, ${JSON.stringify(_embedded.venues[0].location)})'>Learn More</button>
+               <img src='images/icons8-heart-96.png' class="bookmark" onclick="pushToDB(${name}, ${dates}, ${locale}, ${url}, ${distance}, ${images}, ${info}, ${classifications})">
+ 
+            </div>
+  `
+    fullhtml += html;
+>>>>>>> 3534b9927232ee7fea6d2da78fbaccbda94e9fb1
 }
 
 function searchEvent() {
-    // fullhtml = ''
+    fullhtml = ''
     results.innerHTML = ''
     fetch('secret.json')
         .then(response => response.text())
@@ -110,13 +126,13 @@ function searchEvent() {
             fetch(url)
                 .then(response => response.json())
                 .then(myjson => {
-                    data = myjson;
-                    console.log(data);
+                     data = myjson;
                     if (totalPages == -1) {
                         totalPages = myjson.page.totalPages;
                     }
                     for (events in data._embedded) {
-                        data._embedded[events].forEach((eventdata) => results.appendChild(renderCard(eventdata)));
+                        data._embedded[events].forEach((eventdata) => renderCard(eventdata));
+                        results.insertAdjacentHTML("afterbegin", fullhtml);
                         showingresultsfor.textContent = "Showing results for " + searchInput.value
                     }
                     results.scrollTo();
@@ -339,3 +355,5 @@ function searchSuggestion(city) {
     console.log(yourlocation)
     searchEvent()
 }
+
+
