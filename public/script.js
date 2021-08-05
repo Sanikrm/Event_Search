@@ -64,7 +64,6 @@ function viewMore(dates, name, locale, url, distance, images, info, classificati
 }
 
 function renderCard({ dates, name, locale, url, distance, images, info, classifications, _embedded }) {
-<<<<<<< HEAD
 
     console.log("calling render!")
 
@@ -96,24 +95,9 @@ function renderCard({ dates, name, locale, url, distance, images, info, classifi
 
     return element;
     // return container.innerHTML;
-=======
-    let html = `
-          <div class="hero--event_2">
-                <img src="${images[2].url}" class="hero--img">
-                <h3 class="hero--eventname">${name.length > 14 ? name.slice(0, 20) + '...' : name}</h3>
-                <h4 class="hero--eventdesc1">${dates.start.localDate} | ${classifications[0].segment.name} </h4>
-                <h4 class="hero--eventdesc2">${info === undefined ? "There is no info on this event. If you want to read more about the event, click the I'm interested button below :D" : info}</h4>
-                <button class="learnmore" onclick='viewMore(${JSON.stringify(dates)},${JSON.stringify(name)}, ${JSON.stringify(locale)}, ${JSON.stringify(url)}, ${JSON.stringify(distance)}, ${JSON.stringify(images)}, ${JSON.stringify(info)}, ${JSON.stringify(classifications)}, ${JSON.stringify(_embedded.venues[0].location)})'>Learn More</button>
-               <img src='images/icons8-heart-96.png' class="bookmark" onclick="pushToDB(${name}, ${dates}, ${locale}, ${url}, ${distance}, ${images}, ${info}, ${classifications})">
- 
-            </div>
-  `
-    fullhtml += html;
->>>>>>> 3534b9927232ee7fea6d2da78fbaccbda94e9fb1
 }
 
 function searchEvent() {
-    fullhtml = ''
     results.innerHTML = ''
     fetch('secret.json')
         .then(response => response.text())
@@ -131,8 +115,11 @@ function searchEvent() {
                         totalPages = myjson.page.totalPages;
                     }
                     for (events in data._embedded) {
-                        data._embedded[events].forEach((eventdata) => renderCard(eventdata));
-                        results.insertAdjacentHTML("afterbegin", fullhtml);
+                        data._embedded[events].forEach((eventdata) => {
+                            const child = renderCard(eventdata);
+                            console.log(child);
+                            results.appendChild(child);
+                        });
                         showingresultsfor.textContent = "Showing results for " + searchInput.value
                     }
                     results.scrollTo();
@@ -170,8 +157,11 @@ function showPosition(position) {
                         totalPages = myjson.page.totalPages;
                     }
                     for (events in data._embedded) {
-                        data._embedded[events].forEach((eventdata) => results.appendChild(renderCard(eventdata)));
-                        results.insertAdjacentHTML("afterbegin", fullhtml);
+                        data._embedded[events].forEach((eventdata) => {
+                            const child = renderCard(eventdata);
+                            console.log(child);
+                            results.appendChild(child);
+                        });
                     }
                 })
         })
