@@ -63,22 +63,40 @@ function viewMore(dates, name, locale, url, distance, images, info, classificati
 }
 
 function renderCard({ dates, name, locale, url, distance, images, info, classifications, _embedded }) {
-    let html = `
-          <div class="hero--event_2">
-                <img src="${images[2].url}" class="hero--img">
-                <h3 class="hero--eventname">${name.length > 14 ? name.slice(0, 20) + '...' : name}</h3>
-                <h4 class="hero--eventdesc1">${dates.start.localDate} | ${classifications[0].segment.name} </h4>
-                <h4 class="hero--eventdesc2">${info === undefined ? "There is no info on this event. If you want to read more about the event, click the I'm interested button below :D" : info}</h4>
-                <button class="learnmore" onclick='viewMore(${JSON.stringify(dates)},${JSON.stringify(name)}, ${JSON.stringify(locale)}, ${JSON.stringify(url)}, ${JSON.stringify(distance)}, ${JSON.stringify(images)}, ${JSON.stringify(info)}, ${JSON.stringify(classifications)}, ${JSON.stringify(_embedded.venues[0].location)})'>Learn More</button>
-               <img src='images/icons8-heart-96.png' class="bookmark" onclick="pushToDB(${name}, ${dates}, ${locale}, ${url}, ${distance}, ${images}, ${info}, ${classifications})">
- 
-            </div>
-  `
-    fullhtml += html;
+
+    console.log("calling render!")
+
+    let container = document.createElement("div")
+
+    let element = document.createElement("div");
+    element.classList.add("hero--event_2")
+
+    let eventImg = ` <img src="${images[2].url}" class="hero--img">`;;
+    let eventName = `<h3 class="hero--eventname">${name.length > 14 ? name.slice(0, 20) + '...' : name}</h3>`;
+    let eventDesc1 = `<h4 class="hero--eventdesc1">${dates.start.localDate} | ${classifications[0].segment.name} </h4>`;
+    let eventDesc2 = `<h4 class="hero--eventdesc2">${info === undefined ? "There is no info on this event. If you want to read more about the event, click the I'm interested button below :D" : info}</h4>;`
+    
+    let button = document.createElement("button");
+    button.onclick = () => viewMore(dates, name, locale, url, distance, images, info, classifications, _embedded.venues[0].location)
+    button.innerText = "Learn More!";
+
+    let img = document.createElement("img");
+    img.src = "images/icons8-heart-96.png"
+    img.classList.add("bookmark")
+    img.onclick = () => pushToDB(dates, name, locale, url, distance, images, info, classifications, _embedded.venues[0].location)
+
+    element.innerHTML += eventImg + eventName + eventDesc1 + eventDesc2
+    element.appendChild(button);
+    element.appendChild(img);
+
+    container.appendChild(element)
+
+    return element;
+    // return container.innerHTML;
 }
 
 function searchEvent() {
-    fullhtml = ''
+    // fullhtml = ''
     results.innerHTML = ''
     fetch('secret.json')
         .then(response => response.text())
@@ -91,13 +109,13 @@ function searchEvent() {
             fetch(url)
                 .then(response => response.json())
                 .then(myjson => {
-                     data = myjson;
+                    data = myjson;
+                    console.log(data);
                     if (totalPages == -1) {
                         totalPages = myjson.page.totalPages;
                     }
                     for (events in data._embedded) {
-                        data._embedded[events].forEach((eventdata) => renderCard(eventdata));
-                        results.insertAdjacentHTML("afterbegin", fullhtml);
+                        data._embedded[events].forEach((eventdata) => results.appendChild(renderCard(eventdata)));
                         showingresultsfor.textContent = "Showing results for " + searchInput.value
                     }
                     results.scrollTo();
@@ -214,9 +232,10 @@ function initEmailAuth() {
 }
 
 
-function pushToDB({ dates, name, locale, url, distance, images, info, classifications }) {
+function pushToDB(dates, name, locale, url, distance, images, info, classifications, location) {
+    console.log("push to db");
     firebase.database().ref(`users/${googleUser.uid}/saved`).push({
-        name, dates, locale, url, distance, images, info, classifications
+        name, dates, locale, url, images, info, classifications
     });
 }
 
