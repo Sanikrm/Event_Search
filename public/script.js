@@ -13,11 +13,11 @@ const showingresultsfor = document.querySelector(".showingresutlsfor");
 const signupbtn = document.querySelector(".signup--btn")
 const signupButton = document.querySelector(".signup--btn");
 
-function viewMore(dates, name, locale, url, distance, images, info, classifications, eventlocation) {
+function viewMore(dates, name, locale, url, images, info, classifications, eventlocation) {
     console.log(url)
     document.querySelector("body").style.overflow = 'hidden'
     document.querySelector(".overlay2").style.display = 'flex'
-    console.log(dates, name, locale, url, distance, images, info, classifications);
+    console.log(dates, name, locale, url, images, info, classifications);
     document.querySelector('.viewmore--modal').innerHTML = `
       <div class="viewmore--img_hero">
           <img src="${images[3].url}" class="viewmore--img">
@@ -60,7 +60,7 @@ function viewMore(dates, name, locale, url, distance, images, info, classificati
         })
 }
 
-function renderCard({ dates, name, locale, url, distance, images, info, classifications, _embedded }) {
+function renderCard({ dates, name, locale, url, images, info, classifications, _embedded }) {
 
     console.log("calling render!")
 
@@ -71,18 +71,23 @@ function renderCard({ dates, name, locale, url, distance, images, info, classifi
 
     let eventImg = ` <img src="${images[2].url}" class="hero--img">`;;
     let eventName = `<h3 class="hero--eventname">${name.length > 14 ? name.slice(0, 20) + '...' : name}</h3>`;
-    let eventDesc1 = `<h4 class="hero--eventdesc1">${dates.start.localDate} | ${classifications[0].segment.name} </h4>`;
-    let eventDesc2 = `<h4 class="hero--eventdesc2">${info === undefined ? "There is no info on this event. If you want to read more about the event, click the I'm interested button below :D" : info}</h4>;`
+    let eventDesc1 = `<h4 class="hero--eventdesc1">${dates.start.localDate} | ${classifications[0].segment.name} </h4>`
+    let eventDesc2 = `<h4 class="hero--eventdesc2">${info === undefined ? "There is no info on this event. If you want to read more about the event, click the I'm interested button below :D" : info}</h4>`
     
     let button = document.createElement("button");
-    button.onclick = () => viewMore(dates, name, locale, url, distance, images, info, classifications, _embedded.venues[0].location)
+    button.onclick = () => viewMore(dates, name, locale, url, images, info, classifications, _embedded.venues[0].location)
     button.classList.add("learnmore");
-    button.innerText = "Learn More!";
-
+    button.innerText = "Learn More!"
+    let infosub;
+    if(info === undefined){
+     infosub = "This event does not have any info attached to it"
+    } else {
+        infosub = info
+    }
     let img = document.createElement("img");
     img.src = "images/icons8-heart-96.png"
     img.classList.add("bookmark")
-    img.onclick = () => pushToDB(dates, name, locale, url, distance, images, info, classifications, _embedded.venues[0].location)
+    img.onclick = () => pushToDB(dates, name, locale, url, images, infosub, classifications, _embedded.venues[0].location)
 
     element.innerHTML += eventImg + eventName + eventDesc1 + eventDesc2
     element.appendChild(button);
@@ -236,7 +241,7 @@ function initEmailAuth() {
 }
 
 
-function pushToDB(dates, name, locale, url, distance, images, info, classifications, location) {
+function pushToDB(dates, name, locale, url, images, info, classifications, location) {
     if (!signedIn) {
         console.log("init auth!")
         openErrorModal();
@@ -249,15 +254,38 @@ function pushToDB(dates, name, locale, url, distance, images, info, classificati
     }
 }
 
-function pullFromDB() {
+function pullfromDB() {
     if (!signedIn) {
         openErrorModal();
     }
 
     if (signedIn) {
+        alert("Added to bookmark!")
+        let fullhtml = ``;
         firebase.database().ref(`users/${googleUser.uid}/saved`).on("value", snapshot => {
-            const data = snapshot.val;
-            console.log(data);
+            const data = snapshot.val();
+            for(event in data){
+                let eventdata = data[event]
+console.log(eventdata)            ;
+ let html =  `
+               <div class="hero--event_2">
+                <img src="${eventdata.images[2].url}" class="hero--img">
+                <h3 class="hero--eventname">${eventdata.name.length > 14 ? eventdata.name.slice(0, 20) + '...' : eventdata.name}</h3>
+                <h4 class="hero--eventdesc1">${eventdata.dates.start.localDate} | ${eventdata.classifications[0].segment.name} </h4>
+             <h4 class="hero--eventdesc2">${eventdata.info === undefined ? "There is no info on this event from the Ticketmaster. To learn more about this event and its location, click the button below!" : eventdata.info}</h4>
+             <button class="learnmore"><a style="color: white; text-decoration: none" href="${eventdata.url}" target='_blank'"> See event</a></button>
+ 
+                </div>
+                `
+                fullhtml += html
+            }
+
+            console.log(fullhtml)
+            results.innerHTML = '';
+            results.innerHTML = fullhtml;
+            //    <img src='images/icons8-heart-96.png' class="bookmark" onclick="pushToDB(${name}, ${dates}, ${locale}, ${url}, ${distance}, ${images}, ${info}, ${classifications})">
+            
+
         })
     }
 
@@ -342,5 +370,6 @@ function searchSuggestion(city) {
     console.log(yourlocation)
     searchEvent()
 }
+
 
 

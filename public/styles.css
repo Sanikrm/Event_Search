@@ -329,6 +329,19 @@ main.herosection {
     position: absolute
 }
 
+.signup--sect_3 {
+    height: 200px;
+    width: 356px;
+    background-color: white;
+    border-radius: 4px;
+    padding: 16px 44px;
+    position: absolute
+}
+
+.signup--sect_3 .googlelogin{
+    margin-top: 21px;
+}
+
 .signup{
     margin-top: 25px;
     padding: 10px 26px;
