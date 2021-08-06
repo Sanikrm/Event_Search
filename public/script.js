@@ -87,7 +87,9 @@ function renderCard({ dates, name, locale, url, images, info, classifications, _
     let img = document.createElement("img");
     img.src = "images/icons8-heart-96.png"
     img.classList.add("bookmark")
-    img.onclick = () => pushToDB(dates, name, locale, url, images, infosub, classifications, _embedded.venues[0].location)
+    img.onclick = () => { 
+        pushToDB(dates, name, locale, url, images, infosub, classifications, _embedded.venues[0].location)}
+     
 
     element.innerHTML += eventImg + eventName + eventDesc1 + eventDesc2
     element.appendChild(button);
@@ -248,6 +250,7 @@ function pushToDB(dates, name, locale, url, images, info, classifications, locat
     }
 
     if (signedIn) {
+           alert("Added to bookmark!");
         firebase.database().ref(`users/${googleUser.uid}/saved`).push({
             name, dates, locale, url, images, info, classifications
         });
@@ -260,8 +263,7 @@ function pullfromDB() {
     }
 
     if (signedIn) {
-        alert("Added to bookmark!")
-        let fullhtml = ``;
+         let fullhtml = ``;
         firebase.database().ref(`users/${googleUser.uid}/saved`).on("value", snapshot => {
             const data = snapshot.val();
             for(event in data){
