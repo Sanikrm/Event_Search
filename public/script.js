@@ -301,6 +301,7 @@ function signIn() {
         .then((result) => {
             googleUser = result.user;
             closeAuthModal();
+            closeErrorModal();
             signupButton.innerText = "Log Out!";
             signedIn = true;
         }).catch(e => {
