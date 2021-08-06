@@ -8,8 +8,10 @@
  body{
      overflow-x: hidden;
     margin-bottom: 100px;
-   
+    margin: 0px;
  }
+
+ 
 
  html{
          overflow-x: hidden !important;
@@ -259,6 +261,8 @@ main.herosection {
     gap: 34px;
     flex-wrap: wrap;
     align-items: flex-start;
+        padding-bottom: 9px;
+
 }
 
 .extras{
